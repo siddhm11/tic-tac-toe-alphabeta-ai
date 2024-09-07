@@ -3,17 +3,21 @@ THIS IS A SAMPLE GAME WHERE THE AI IS CIRCLE
 ![image](https://github.com/user-attachments/assets/ec074965-2d28-442b-bcc2-44ed6db0c80e)
 
 when i press R (RESET)
+
 ![image](https://github.com/user-attachments/assets/0613f371-0537-4622-a714-694b8f72ed85)
 
 ANOTHER GAME
+
 ![image](https://github.com/user-attachments/assets/1a572483-1cdf-4930-99b0-7166cc81fb43)
 
 WHEN self.player = 1 , the user/human starts playing 
+
 ![image](https://github.com/user-attachments/assets/62785557-60c4-44e5-b2f0-a18d62bb990b)
 
 when G is clicked , it means the pvp is started 
 
 AND THIS IS THE ALPHA BETA PRUNING INITIATED CODE 
+
 **
 class AI :
     def __init__(self , level = 1 , player = 2 ):
