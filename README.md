@@ -1,12 +1,207 @@
-Tic-Tac-Toe AI with Alpha-Beta PruningA classic Tic-Tac-Toe game built with Python and Pygame, featuring a powerful AI opponent that uses the Minimax algorithm with Alpha-Beta pruning for optimal move selection.FeaturesInteractive GUI: A clean and responsive graphical interface built with Pygame.Intelligent AI: An unbeatable AI opponent that uses the Minimax algorithm to find the optimal move.Alpha-Beta Pruning: The AI's decision-making is optimized for speed and efficiency.Multiple Game Modes:Player vs. AI: Challenge the computer.Player vs. Player (PvP): Play against a friend on the same screen.Adjustable AI Difficulty:Level 0: AI plays randomly (great for beginners).Level 1: AI plays perfectly using the full algorithm.Visual Feedback: The winning line is drawn on the board when a player wins.How to Get StartedPrerequisitesPython 3.7 or newerPygame libraryNumPy libraryInstallationClone the repository:git clone [https://github.com/your-username/your-repository.git](https://github.com/siddhm11/your-repository.git)
-cd your-repository
-Install the required packages:pip install pygame numpy
-Run the game:python py-ttt-neat.py
-How to PlayThe goal is simple: be the first player to get three of your marks in a row, either horizontally, vertically, or diagonally.ControlsKeyActionMouse ClickPlace your 'X' or 'O' in an empty square.RReset the game and start a new match.GToggle between Player vs. AI and PvP modes.0Set the AI to random mode (Level 0).1Set the AI to optimal/unbeatable mode (Level 1).Technical DetailsProject Structure.
-├── py-ttt-neat.py      # Main application logic, including the Game and AI classes.
-├── CONSTANTS_TTT.PY    # Contains all game constants like colors, dimensions, etc.
-└── readme.md           # This file
-The AI AlgorithmThe AI's brain is powered by the Minimax algorithm, a classic decision-making algorithm from game theory.Minimax: It simulates every possible move down to the end of the game, assigning a score to each outcome (win, lose, or draw). It then chooses the move that leads to the best possible outcome for itself, assuming the opponent will also play optimally.Alpha-Beta Pruning: To avoid the massive computation of checking every single game state, this optimization "prunes" branches of the game tree that are not worth exploring. This makes the AI's decision-making significantly faster without sacrificing accuracy.
+# Tic-Tac-Toe - Alpha-Beta Pruning AI
+
+A compact Tic-Tac-Toe game implemented in Python with a simple AI that uses Minimax and Alpha-Beta pruning. Built with Pygame and NumPy. This repo contains a playable GUI, a clear AI implementation, and room for improvements and experiments.
+
+---
+
+## Demo / Screenshots
+
+> Add your screenshots to `assets/` and replace the file names below.
+
+![Game start](assets/screenshot_start.png)
+
+![AI move](assets/screenshot_play.png)
+
+---
+
+## Features
+
+* Play Tic-Tac-Toe with a GUI powered by Pygame.
+* AI opponent implemented with Minimax and Alpha-Beta pruning.
+* Two AI behaviors:
+
+  * Level 0 - Random moves.
+  * Level 1 - Full Minimax + Alpha-Beta pruning.
+* Keyboard controls to change mode, restart, and switch AI level.
+* Clean, compact code base - easy to extend.
+
+---
+
+## Quick start
+
+1. Create and activate a virtual environment (recommended):
+
+```bash
+python -m venv venv
+# macOS / Linux
+source venv/bin/activate
+# Windows
+venv\Scripts\activate
+```
+
+2. Install dependencies:
+
+```bash
+pip install pygame numpy
+```
+
+3. Run the game:
+
+```bash
+python py-ttt-neat.py
+```
+
+---
+
+## Controls
+
+* Left mouse click - place your mark (when it is the human's turn).
+* `g` - toggle game mode between PvP and AI.
+* `r` - restart the game.
+* `0` - set AI to random mode.
+* `1` - set AI to Minimax + Alpha-Beta mode.
+
+> Note: The repo's default startup configuration sets the AI as player 2 and the starting player to 2, so the AI plays first when the game starts.
+
+---
+
+## How the AI works (high level)
+
+The AI uses the Minimax algorithm with Alpha-Beta pruning to choose optimal moves. A simple evaluation function is used:
+
+* `+1` if player 1 wins.
+* `-1` if player 2 (AI) wins.
+* `0` for a draw or non-terminal position at leaf depth.
+
+Pseudocode used by the implementation:
+
+```text
+function minimax(board, maximizingPlayer, alpha, beta):
+    if terminal(board):
+        return evaluation(board), None
+
+    if maximizingPlayer:
+        bestEval = -inf
+        for each legal move:
+            make move
+            eval, _ = minimax(board, False, alpha, beta)
+            undo move
+            bestEval = max(bestEval, eval)
+            alpha = max(alpha, eval)
+            if alpha >= beta: break   # prune
+        return bestEval, bestMove
+
+    else:  # minimizing player
+        bestEval = +inf
+        for each legal move:
+            make move
+            eval, _ = minimax(board, True, alpha, beta)
+            undo move
+            bestEval = min(bestEval, eval)
+            beta = min(beta, eval)
+            if alpha >= beta: break   # prune
+        return bestEval, bestMove
+```
+
+Because Tic-Tac-Toe is small, the AI currently explores to game end for exact play. That gives perfect play when using Minimax.
+
+---
+
+## Important implementation notes
+
+* Files of interest:
+
+  * `py-ttt-neat.py` - main game logic, Pygame UI, and AI implementation.
+  * `CONSTANTS_TTT.PY` - sizes, colors, and drawing constants.
+
+* `Board.final_state()` returns `0` for no win, `1` if player 1 wins, and `2` if player 2 wins.
+
+* The Minimax implementation uses deep copies of the board to simulate moves. This is simple and safe but slower than using make/undo in-place moves.
+
+---
+
+## Known issues & quick fixes
+
+* **Gamemode toggle small bug**
+
+  * Current code in `Game.change_gamemode()` assigns `'ai '` (with a trailing space) in one branch. Later checks test for `== 'ai'`, which can prevent the AI from resuming after toggling.
+  * Quick fix: replace the line in `py-ttt-neat.py`:
+
+```py
+# original
+self.gamemode = 'ai ' if self.gamemode == 'pvp' else 'pvp'
+
+# fixed
+self.gamemode = 'ai' if self.gamemode == 'pvp' else 'pvp'
+```
+
+* **Restart logic**
+
+  * The code in the main loop stores `board = game.board` and `ai = game.ai` and later, on restart, reassigns these old references back. A cleaner restart is to re-create the `Game` instance. For example:
+
+```py
+# replace the restart branch in KEYDOWN
+if event.key == pygame.K_r:
+    game = Game()
+    board = game.board
+    ai = game.ai
+```
+
+This avoids stale references and makes `restart()` unnecessary.
+
+---
+
+## Performance and complexity notes
+
+* The branching factor for Tic-Tac-Toe starts at 9, then 8, then 7, and so on. The number of possible move sequences when the board is filled is `9! = 362,880`.
+* Many games end earlier due to a win, so the actual number of explored nodes is smaller. Alpha-Beta pruning reduces the number of evaluated nodes, especially if good move ordering is used.
+
+---
+
+## Suggestions for improvements
+
+* Replace `deepcopy` with in-place make/undo move. This reduces memory overhead and speeds up recursion.
+* Add iterative deepening plus a transposition table (hash table) for caching repeated positions.
+* Add a depth limit and a heuristic evaluation to support larger boards or to reduce thinking time.
+* Add a command line option to choose who starts first and to set the AI player.
+* Add automated tests for the core board logic and minimax correctness.
+* Add a small CI workflow to run linting and tests.
+
+---
+
+## Project structure
+
+```
+├── py-ttt-neat.py          # main game + AI
+├── CONSTANTS_TTT.PY        # drawing constants
+├── assets/                 # add screenshots or gifs here
+└── README.md
+```
+
+---
+
+## Contributing
+
+If you want to contribute:
+
+1. Fork the repo.
+2. Create a branch for your change.
+3. Add tests where appropriate.
+4. Send a pull request describing the change.
+
+All improvements are welcome - small PRs that fix bugs or tidy code are perfect.
+
+---
+
+## License
+
+This project is free to use. A suggested license is MIT. Create a `LICENSE` file containing the MIT text if you want to publish this project publicly.
+
+---
+
+## Contact
+
+If you want me to tighten the README tone, add badges, auto-generated requirements, or produce a short CONTRIBUTING.md, say the word and I will update the README accordingly.
 
 
 THIS IS A SAMPLE GAME WHERE THE AI IS CIRCLE 
@@ -24,87 +219,3 @@ ANOTHER GAME
 WHEN self.player = 1 , the user/human starts playing 
 
 ![image](https://github.com/user-attachments/assets/62785557-60c4-44e5-b2f0-a18d62bb990b)
-
-when G is clicked , it means the pvp is started 
-
-AND THIS IS THE ALPHA BETA PRUNING INITIATED CODE 
-
-**
-class AI :
-    def __init__(self , level = 1 , player = 2 ):
-        self.player = player
-        self.level = level
-
-    def rnd(self,board):
-        empty_sqrs = board.get_empty_sqrs()
-        idx = random.randrange(0,len(empty_sqrs))
-        return empty_sqrs[idx]
-
-    def minimax(self,board ,maximizing,alpha=-100 , beta = 100):
-        #terminal cases check
-        case = board.final_state()
-        #player
-        if case == 1 :
-            return 1,None #eval , Move
-
-        #ai
-        if case == 2:
-            return -1,None #eval , Move
-
-        #draw
-        elif board.isfull():
-            return 0,None
-
-        if maximizing:
-            maxeval = -100
-            best_move = None
-            empty_sqrs = board.get_empty_sqrs()
-
-            for (row, col) in empty_sqrs:
-                temp_board = copy.deepcopy(board)
-                temp_board.mark_sqr(row, col, 1)
-                reval = self.minimax(temp_board, False,alpha , beta)[0]
-
-                if reval>maxeval:
-                    maxeval = reval
-                    best_move = (row, col)
-
-                alpha= max(alpha , reval)
-                if alpha>=beta:
-                    break
-
-            return maxeval, best_move
-
-
-        elif not maximizing:
-            mineval = +1000
-            best_move = None
-            empty_sqrs = board.get_empty_sqrs()
-
-            for (row, col) in empty_sqrs:
-                temp_board = copy.deepcopy(board)
-                temp_board.mark_sqr(row, col, 2)
-                reval = self.minimax(temp_board,True, alpha , beta )[0]
-
-                if mineval > reval :
-                    mineval = reval
-                    best_move = (row,col)
-                beta = min(beta , reval)
-                if alpha >= beta:
-                    break
-
-            return mineval , best_move
-
-
-    def eval(self,main_board):
-        if self.level == 0 :
-            aeval = 'random'
-            move = self.rnd(main_board)
-
-        else:
-            aeval,move = self.minimax(main_board, False)
-
-        print(f'AI HAS CHOSEN TO MARK THE SQUARE IN POS{move} with an eval of {aeval}')
-
-        return move #row,col
-**
