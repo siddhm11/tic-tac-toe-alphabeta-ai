@@ -1,3 +1,14 @@
+Tic-Tac-Toe AI with Alpha-Beta PruningA classic Tic-Tac-Toe game built with Python and Pygame, featuring a powerful AI opponent that uses the Minimax algorithm with Alpha-Beta pruning for optimal move selection.FeaturesInteractive GUI: A clean and responsive graphical interface built with Pygame.Intelligent AI: An unbeatable AI opponent that uses the Minimax algorithm to find the optimal move.Alpha-Beta Pruning: The AI's decision-making is optimized for speed and efficiency.Multiple Game Modes:Player vs. AI: Challenge the computer.Player vs. Player (PvP): Play against a friend on the same screen.Adjustable AI Difficulty:Level 0: AI plays randomly (great for beginners).Level 1: AI plays perfectly using the full algorithm.Visual Feedback: The winning line is drawn on the board when a player wins.How to Get StartedPrerequisitesPython 3.7 or newerPygame libraryNumPy libraryInstallationClone the repository:git clone [https://github.com/your-username/your-repository.git](https://github.com/siddhm11/your-repository.git)
+cd your-repository
+Install the required packages:pip install pygame numpy
+Run the game:python py-ttt-neat.py
+How to PlayThe goal is simple: be the first player to get three of your marks in a row, either horizontally, vertically, or diagonally.ControlsKeyActionMouse ClickPlace your 'X' or 'O' in an empty square.RReset the game and start a new match.GToggle between Player vs. AI and PvP modes.0Set the AI to random mode (Level 0).1Set the AI to optimal/unbeatable mode (Level 1).Technical DetailsProject Structure.
+├── py-ttt-neat.py      # Main application logic, including the Game and AI classes.
+├── CONSTANTS_TTT.PY    # Contains all game constants like colors, dimensions, etc.
+└── readme.md           # This file
+The AI AlgorithmThe AI's brain is powered by the Minimax algorithm, a classic decision-making algorithm from game theory.Minimax: It simulates every possible move down to the end of the game, assigning a score to each outcome (win, lose, or draw). It then chooses the move that leads to the best possible outcome for itself, assuming the opponent will also play optimally.Alpha-Beta Pruning: To avoid the massive computation of checking every single game state, this optimization "prunes" branches of the game tree that are not worth exploring. This makes the AI's decision-making significantly faster without sacrificing accuracy.
+
+
 THIS IS A SAMPLE GAME WHERE THE AI IS CIRCLE 
 
 ![image](https://github.com/user-attachments/assets/ec074965-2d28-442b-bcc2-44ed6db0c80e)
