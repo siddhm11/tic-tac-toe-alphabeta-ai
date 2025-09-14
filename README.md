@@ -6,11 +6,21 @@ A compact Tic-Tac-Toe game implemented in Python with a simple AI that uses Mini
 
 ## Demo / Screenshots
 
-> Add your screenshots to `assets/` and replace the file names below.
+### AI plays as Circle
 
-![Game start](assets/screenshot_start.png)
+![AI as Circle](https://github.com/user-attachments/assets/ec074965-2d28-442b-bcc2-44ed6db0c80e)
 
-![AI move](assets/screenshot_play.png)
+### Resetting the Game (`R` key)
+
+![Reset example](https://github.com/user-attachments/assets/0613f371-0537-4622-a714-694b8f72ed85)
+
+### Another Game in Action
+
+![Another game](https://github.com/user-attachments/assets/1a572483-1cdf-4930-99b0-7166cc81fb43)
+
+### Human Starts First (self.player = 1)
+
+![Human starts first](https://github.com/user-attachments/assets/62785557-60c4-44e5-b2f0-a18d62bb990b)
 
 ---
 
@@ -61,7 +71,7 @@ python py-ttt-neat.py
 * `0` - set AI to random mode.
 * `1` - set AI to Minimax + Alpha-Beta mode.
 
-> Note: The repo's default startup configuration sets the AI as player 2 and the starting player to 2, so the AI plays first when the game starts.
+> Note: By default, the AI is player 2 and starts first. If you set `self.player = 1` in the code, the human starts first.
 
 ---
 
@@ -201,7 +211,7 @@ This project is free to use. A suggested license is MIT. Create a `LICENSE` file
 
 ## Contact
 
-If you want me to tighten the README tone, add badges, auto-generated requirements, or produce a short CONTRIBUTING.md, say the word and I will update the README accordingly.
+For questions, suggestions, or improvements, feel free to open an issue or submit a pull request.
 
 
 THIS IS A SAMPLE GAME WHERE THE AI IS CIRCLE 
